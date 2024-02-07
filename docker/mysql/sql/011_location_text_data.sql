@@ -1,0 +1,38 @@
+BEGIN;
+
+INSERT INTO location_text VALUES(1,0,'de','Uralter Wald');
+INSERT INTO location_text VALUES(2,1,'de','Wildturm-Ödnis');
+INSERT INTO location_text VALUES(3,2,'de','Korallenhochland');
+INSERT INTO location_text VALUES(4,3,'de','Tal der Verwesung');
+INSERT INTO location_text VALUES(5,4,'de','Heimat der Ältesten');
+INSERT INTO location_text VALUES(6,5,'de','Ewiger Strom');
+INSERT INTO location_text VALUES(7,6,'de','Große Schlucht');
+INSERT INTO location_text VALUES(8,7,'de','Arena');
+INSERT INTO location_text VALUES(9,8,'de','Vereinigung der Schicksale');
+INSERT INTO location_text VALUES(10,9,'de','Caverns of El Dorado');
+INSERT INTO location_text VALUES(11,10,'de','Special Arena');
+INSERT INTO location_text VALUES(12,11,'de','Hoarfrost Reach');
+INSERT INTO location_text VALUES(13,12,'de','Origin Isle');
+INSERT INTO location_text VALUES(14,13,'de','Guiding Lands');
+INSERT INTO location_text VALUES(15,14,'de','Secluded Valley');
+INSERT INTO location_text VALUES(16,15,'de','Seliana Supply Cache');
+INSERT INTO location_text VALUES(17,16,'de','Castle Schrade');
+INSERT INTO location_text VALUES(1,0,'en','Ancient Forest');
+INSERT INTO location_text VALUES(2,1,'en','Wildspire Waste');
+INSERT INTO location_text VALUES(3,2,'en','Coral Highlands');
+INSERT INTO location_text VALUES(4,3,'en','Rotten Vale');
+INSERT INTO location_text VALUES(5,4,'en','Elder''s Recess');
+INSERT INTO location_text VALUES(6,5,'en','Everstream');
+INSERT INTO location_text VALUES(7,6,'en','Great Ravine');
+INSERT INTO location_text VALUES(8,7,'en','Arena');
+INSERT INTO location_text VALUES(9,8,'en','Confluence of Fates');
+INSERT INTO location_text VALUES(10,9,'en','Caverns of El Dorado');
+INSERT INTO location_text VALUES(11,10,'en','Special Arena');
+INSERT INTO location_text VALUES(12,11,'en','Hoarfrost Reach');
+INSERT INTO location_text VALUES(13,12,'en','Origin Isle');
+INSERT INTO location_text VALUES(14,13,'en','Guiding Lands');
+INSERT INTO location_text VALUES(15,14,'en','Secluded Valley');
+INSERT INTO location_text VALUES(16,15,'en','Seliana Supply Cache');
+INSERT INTO location_text VALUES(17,16,'en','Castle Schrade');
+
+COMMIT;

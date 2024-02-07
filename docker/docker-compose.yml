@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  mhw-db:
+    container_name: mhw-db
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"

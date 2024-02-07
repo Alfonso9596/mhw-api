@@ -1,0 +1,34 @@
+BEGIN;
+
+INSERT INTO location_camp_text VALUES(5,1,'de','Southwest Camp',1);
+INSERT INTO location_camp_text VALUES(17,1,'de','Northwest Camp',8);
+INSERT INTO location_camp_text VALUES(29,1,'de','Northeast Camp',11);
+INSERT INTO location_camp_text VALUES(41,1,'de','Ancient Forest Camp',17);
+INSERT INTO location_camp_text VALUES(53,2,'de','Southwest Camp',1);
+INSERT INTO location_camp_text VALUES(65,2,'de','Central Camp',6);
+INSERT INTO location_camp_text VALUES(77,2,'de','Northeast Camp',15);
+INSERT INTO location_camp_text VALUES(89,2,'de','Eastern Camp',11);
+INSERT INTO location_camp_text VALUES(101,3,'de','Southern Camp',1);
+INSERT INTO location_camp_text VALUES(113,3,'de','Northeast Camp',12);
+INSERT INTO location_camp_text VALUES(125,4,'de','Southeast Camp',1);
+INSERT INTO location_camp_text VALUES(137,4,'de','Central Camp',11);
+INSERT INTO location_camp_text VALUES(149,5,'de','Southern Camp',1);
+INSERT INTO location_camp_text VALUES(161,5,'de','Eastern Camp',8);
+INSERT INTO location_camp_text VALUES(173,5,'de','Northwest Camp',16);
+INSERT INTO location_camp_text VALUES(1,1,'en','Southwest Camp',1);
+INSERT INTO location_camp_text VALUES(13,1,'en','Northwest Camp',8);
+INSERT INTO location_camp_text VALUES(25,1,'en','Northeast Camp',11);
+INSERT INTO location_camp_text VALUES(37,1,'en','Ancient Forest Camp',17);
+INSERT INTO location_camp_text VALUES(49,2,'en','Southwest Camp',1);
+INSERT INTO location_camp_text VALUES(61,2,'en','Central Camp',6);
+INSERT INTO location_camp_text VALUES(73,2,'en','Northeast Camp',15);
+INSERT INTO location_camp_text VALUES(85,2,'en','Eastern Camp',11);
+INSERT INTO location_camp_text VALUES(97,3,'en','Southern Camp',1);
+INSERT INTO location_camp_text VALUES(109,3,'en','Northeast Camp',12);
+INSERT INTO location_camp_text VALUES(121,4,'en','Southeast Camp',1);
+INSERT INTO location_camp_text VALUES(133,4,'en','Central Camp',11);
+INSERT INTO location_camp_text VALUES(145,5,'en','Southern Camp',1);
+INSERT INTO location_camp_text VALUES(157,5,'en','Eastern Camp',8);
+INSERT INTO location_camp_text VALUES(169,5,'en','Northwest Camp',16);
+
+COMMIT;
