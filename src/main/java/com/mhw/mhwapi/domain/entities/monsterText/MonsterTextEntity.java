@@ -1,5 +1,8 @@
 package com.mhw.mhwapi.domain.entities.monsterText;
 
+import com.mhw.mhwapi.enums.MonsterType;
+import com.mhw.mhwapi.enums.converter.MonsterTypeConverter;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,6 +21,8 @@ public class MonsterTextEntity {
     private Integer id;
     private String langId;
     private String name;
+    @Convert(converter = MonsterTypeConverter.class)
+    private MonsterType ecology;
     private String description;
     private String altStateDescription;
 }

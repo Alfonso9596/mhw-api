@@ -1,5 +1,6 @@
 package com.mhw.mhwapi.api.v1.monster.dto;
 
+import com.mhw.mhwapi.enums.MonsterType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,10 @@ public class MonsterDto implements Serializable{
 
     private Integer id;
     private Integer orderId;
+    private String name;
+    private String description;
+    private MonsterType ecology;
+    private String altStateDescription;
     private String size;
     private String icon;
     private Boolean pitfallTrap;
@@ -58,5 +63,4 @@ public class MonsterDto implements Serializable{
     private Boolean ailmentStun;
     private Boolean ailmentMud;
     private Boolean ailmentEffluvia;
-    private MonsterTextDto data;
 }

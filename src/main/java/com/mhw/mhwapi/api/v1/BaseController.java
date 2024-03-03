@@ -1,5 +1,6 @@
 package com.mhw.mhwapi.api.v1;
 
+import com.mhw.mhwapi.enums.MonsterSize;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,10 @@ public class BaseController {
         }
     }
 
-    public void validateMonsterSizePath(String size) {
+    public void validateMonsterSizePath(MonsterSize size) {
         switch (size) {
-            case "small":
-            case "large":
+            case small:
+            case large:
                 break;
             default:
                 String message = String.format(MONSTER_SIZE_IS_NOT_SUPPORTED, size);
