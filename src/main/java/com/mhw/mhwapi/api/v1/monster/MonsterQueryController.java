@@ -1,6 +1,7 @@
 package com.mhw.mhwapi.api.v1.monster;
 
 import com.mhw.mhwapi.api.v1.BaseController;
+import com.mhw.mhwapi.api.v1.monster.dto.MonsterDto;
 import com.mhw.mhwapi.api.v1.monster.dto.MonsterSimpleDto;
 import com.mhw.mhwapi.common.ApiUrlMapping;
 import com.mhw.mhwapi.common.Page;
@@ -56,6 +57,15 @@ public class MonsterQueryController extends BaseController {
 
         Map<String, Object> params = parseParams(size, weaknessFire, weaknessWater, weaknessIce, weaknessThunder, weaknessDragon);
         return ResponseEntity.ok(monsterQueryService.getAllMonsters(lang, params));
+    }
+
+    @GetMapping(value = ApiUrlMapping.MonsterUrlMapping.GET_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MonsterDto> getMonsterById(
+            @PathVariable(value = "lang") String lang,
+            @PathVariable(value = "id") Integer id) {
+        validateLangPath(lang);
+
+        return ResponseEntity.ok(monsterQueryService.getMonsterById(lang, id));
     }
 
     private Map<String, Object> parseParams(MonsterSize size, Integer weaknessFire, Integer weaknessWater, Integer weaknessIce, Integer weaknessThunder, Integer weaknessDragon) {

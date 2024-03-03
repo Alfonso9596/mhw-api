@@ -1,5 +1,6 @@
 package com.mhw.mhwapi.domain.services;
 
+import com.mhw.mhwapi.api.v1.monster.dto.MonsterDto;
 import com.mhw.mhwapi.api.v1.monster.dto.MonsterSimpleDto;
 import com.mhw.mhwapi.common.Filter;
 import com.mhw.mhwapi.common.Page;
@@ -7,6 +8,7 @@ import com.mhw.mhwapi.common.QueryOperator;
 import com.mhw.mhwapi.common.SearchCriteria;
 import com.mhw.mhwapi.domain.entities.EntitySpecification;
 import com.mhw.mhwapi.domain.entities.monster.MonsterEntity;
+import com.mhw.mhwapi.domain.entities.monster.MonsterRepository;
 import com.mhw.mhwapi.domain.entities.monster.MonsterRepositoryCustom;
 import com.mhw.mhwapi.domain.entities.monsterText.MonsterTextEntity;
 import com.mhw.mhwapi.domain.entities.monsterText.MonsterTextRepository;
@@ -22,6 +24,9 @@ import static com.mhw.mhwapi.util.QueryPageResponseUtil.convertPageResponse;
 
 @Service
 public class MonsterQueryService {
+
+    @Autowired
+    private MonsterRepository monsterRepository;
 
     @Autowired
     private MonsterTextRepository monsterTextRepository;
@@ -77,6 +82,15 @@ public class MonsterQueryService {
                 .collect(Collectors.toList());
 
 
+    }
+
+    public MonsterDto getMonsterById(String lang, Integer id) {
+        MonsterEntity monsterEntity = monsterRepository.getReferenceById(id);
+
+        this.addMonsterInformation(monsterEntity, lang);
+        this.translateMonsterSize(monsterEntity, lang);
+
+        return monsterConverter.map(monsterEntity);
     }
 
     private void addMonsterInformation(MonsterEntity monsterEntity, String lang) {

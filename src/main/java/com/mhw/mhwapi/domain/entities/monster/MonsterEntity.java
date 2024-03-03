@@ -18,6 +18,7 @@ public class MonsterEntity {
     private Integer orderId;
     private String size;
     private String icon;
+    private String image;
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private Boolean pitfallTrap;
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)

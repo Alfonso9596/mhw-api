@@ -20,6 +20,7 @@ public class MonsterDto implements Serializable{
     private String altStateDescription;
     private String size;
     private String icon;
+    private String image;
     private Boolean pitfallTrap;
     private Boolean shockTrap;
     private Boolean vineTrap;
