@@ -1,7 +1,5 @@
 package com.mhw.mhwapi.domain.entities.monsterHabitat;
 
-import com.mhw.mhwapi.domain.entities.locationText.LocationTextEntity;
-import com.mhw.mhwapi.domain.entities.monster.MonsterEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,12 +14,8 @@ public class MonsterHabitatEntity {
 
     @Id
     private Integer id;
-    @ManyToOne(targetEntity = MonsterEntity.class)
-    @JoinColumn(name = "monster_id")
-    private MonsterEntity monster;
-    @ManyToOne(targetEntity = LocationTextEntity.class)
-    @JoinColumn(name = "location_id")
-    private LocationTextEntity location;
+    private Integer monsterId;
+    private Integer locationId;
     private String startArea;
     private String moveArea;
     private String restArea;

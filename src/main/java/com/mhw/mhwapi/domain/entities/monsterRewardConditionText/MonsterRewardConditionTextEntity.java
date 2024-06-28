@@ -16,6 +16,7 @@ public class MonsterRewardConditionTextEntity {
 
     @Id
     private Integer id;
+    private Integer monsterRewardConditionId;
     private String langId;
     private String name;
 }

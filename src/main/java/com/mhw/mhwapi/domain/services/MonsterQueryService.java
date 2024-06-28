@@ -10,6 +10,8 @@ import com.mhw.mhwapi.domain.entities.EntitySpecification;
 import com.mhw.mhwapi.domain.entities.monster.MonsterEntity;
 import com.mhw.mhwapi.domain.entities.monster.MonsterRepository;
 import com.mhw.mhwapi.domain.entities.monster.MonsterRepositoryCustom;
+import com.mhw.mhwapi.domain.entities.monsterBreak.MonsterBreakRepository;
+import com.mhw.mhwapi.domain.entities.monsterBreakText.MonsterBreakTextRepository;
 import com.mhw.mhwapi.domain.entities.monsterText.MonsterTextEntity;
 import com.mhw.mhwapi.domain.entities.monsterText.MonsterTextRepository;
 import com.mhw.mhwapi.mappers.monster.MonsterConverter;
@@ -32,6 +34,12 @@ public class MonsterQueryService {
     private MonsterTextRepository monsterTextRepository;
 
     @Autowired
+    private MonsterBreakRepository monsterBreakRepository;
+
+    @Autowired
+    private MonsterBreakTextRepository monsterBreakTextRepository;
+
+    @Autowired
     private MonsterConverter monsterConverter;
 
     @Autowired
@@ -40,15 +48,35 @@ public class MonsterQueryService {
     @Autowired
     private EntitySpecification<MonsterEntity> entityEntitySpecification;
 
-    public Page<MonsterSimpleDto> getPageableMonsters(String lang, PageRequest pageable, Map<String, Object> params) {
+    public Page<MonsterSimpleDto> getPageableMonsters(String lang, PageRequest pageable, Map<String, String> params) {
         List<Filter> filters = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            Filter filter = new Filter();
-            filter.setField(entry.getKey());
-            filter.setOperator(QueryOperator.EQUALS);
-            filter.setValue(String.valueOf(entry.getValue()));
-            filters.add(filter);
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (!entry.getKey().equals("name")) {
+                Filter filter = new Filter();
+                filter.setField(entry.getKey());
+                if (entry.getValue().contains("*")) {
+                    String value = entry.getValue().replaceAll("\\*", "");
+                    filter.setValue(value);
+                    filter.setOperator(QueryOperator.LIKE);
+                } else {
+                    filter.setValue(entry.getValue());
+                    filter.setOperator(QueryOperator.EQUALS);
+                }
+                filters.add(filter);
+            }
         }
+
+        if (params.containsKey("name")) {
+            List<Integer> monsterIds = monsterTextRepository.getMonsterIdsByName(params.get("name"));
+            if (!monsterIds.isEmpty()) {
+                Filter filter = new Filter();
+                filter.setField("id");
+                filter.setValue(monsterIds.stream().map(String::valueOf).collect(Collectors.joining(",")));
+                filter.setOperator(QueryOperator.IN);
+                filters.add(filter);
+            }
+        }
+
         SearchCriteria searchCriteria = new SearchCriteria(filters);
         var data = monsterRepositoryCustom.findMonsterByPageable(pageable, entityEntitySpecification.specificationBuilder(searchCriteria));
         for (MonsterEntity monsterEntity : data.getContent()) {
@@ -56,7 +84,11 @@ public class MonsterQueryService {
             this.translateMonsterSize(monsterEntity, lang);
         }
 
-        return convertPageResponse(monsterConverter.mapSimple(data.getContent()), data, pageable);
+        return convertPageResponse(data.getContent().stream()
+                .map(monster -> monsterConverter.mapSimple(monster, lang))
+                .collect(Collectors.toList()),
+                data,
+                pageable);
     }
 
     public List<MonsterSimpleDto> getAllMonsters(String lang, Map<String, Object> params) {
@@ -77,7 +109,7 @@ public class MonsterQueryService {
 
         return monsterList
                 .stream()
-                .map(monsterConverter::mapSimple)
+                .map(monster -> monsterConverter.mapSimple(monster,lang))
                 .sorted(Comparator.comparing(MonsterSimpleDto::getName))
                 .collect(Collectors.toList());
 
@@ -90,13 +122,15 @@ public class MonsterQueryService {
         this.addMonsterInformation(monsterEntity, lang);
         this.translateMonsterSize(monsterEntity, lang);
 
-        return monsterConverter.map(monsterEntity);
+        return monsterConverter.map(monsterEntity, lang);
     }
 
-    private void addMonsterInformation(MonsterEntity monsterEntity, String lang) {
-        Optional<MonsterTextEntity> monsterTextEntity = monsterTextRepository.getMonsterTextByIdAndLang(monsterEntity.getId(), lang);
 
-        monsterTextEntity.ifPresent(monsterEntity::setData);
+
+    private void addMonsterInformation(MonsterEntity monsterEntity, String lang) {
+        Optional<MonsterTextEntity> monsterTextEntity = monsterTextRepository.getMonsterTextByMonsterIdAndLang(monsterEntity.getId(), lang);
+
+        //monsterTextEntity.ifPresent(monsterEntity::setData);
     }
 
     private void translateMonsterSize(MonsterEntity monsterEntity, String lang) {

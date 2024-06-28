@@ -2,16 +2,22 @@ package com.mhw.mhwapi.domain.entities;
 
 import com.mhw.mhwapi.common.Filter;
 import com.mhw.mhwapi.common.SearchCriteria;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
 public class EntitySpecification<T> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EntitySpecification.class);
 
     public Specification<T> specificationBuilder(SearchCriteria searchCriteria) {
         if (Objects.nonNull(searchCriteria) && !CollectionUtils.isEmpty(searchCriteria.getFilters())) {
@@ -40,6 +46,15 @@ public class EntitySpecification<T> {
             }
             case LIKE -> {
                 return ((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(filter.getField()), "%" + filter.getValue() + "%"));
+            }
+            case IN -> {
+                return ((root, query, criteriaBuilder) -> {
+                    CriteriaBuilder.In<Integer> inClause = criteriaBuilder.in(root.get(filter.getField()));
+                    for (Integer i : Arrays.stream(filter.getValue().split(",")).map(Integer::parseInt).toList()) {
+                        inClause.value(i);
+                    }
+                    return inClause;
+                });
             }
             default -> {
                 return null;

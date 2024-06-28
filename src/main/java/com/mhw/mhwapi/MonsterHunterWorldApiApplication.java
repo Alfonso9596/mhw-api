@@ -12,7 +12,6 @@ public class MonsterHunterWorldApiApplication {
 		SpringApplication.run(MonsterHunterWorldApiApplication.class, args);
 	}
 
-
 	@Bean
 	public CommonsRequestLoggingFilter logFilter() {
 		CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();

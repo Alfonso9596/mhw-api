@@ -17,8 +17,8 @@ public class LocationItemEntity {
     @Id
     private Integer id;
     @ManyToOne(targetEntity = LocationTextEntity.class)
-    @JoinColumn(name = "location_id")
-    private LocationTextEntity location;
+    @JoinColumn(name = "location_text_id")
+    private LocationTextEntity locationTextId;
     private Integer area;
     @Column(name = "class")
     private String group;

@@ -8,7 +8,7 @@ public enum ItemSubCategory {
     SUPPLY("supply"),
     TRADE("trade");
 
-    private String value;
+    private final String value;
 
     ItemSubCategory(String value) {
         this.value = value;

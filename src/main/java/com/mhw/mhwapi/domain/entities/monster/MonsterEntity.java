@@ -1,6 +1,5 @@
 package com.mhw.mhwapi.domain.entities.monster;
 
-import com.mhw.mhwapi.domain.entities.monsterText.MonsterTextEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +27,9 @@ public class MonsterEntity {
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private Boolean hasWeakness;
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private Boolean hasAltWeakness;
+    private Boolean hasSecondaryWeakness;
+    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
+    private Boolean hasTertiaryWeakness;
     private Integer weaknessFire;
     private Integer weaknessWater;
     private Integer weaknessIce;
@@ -39,16 +40,26 @@ public class MonsterEntity {
     private Integer weaknessParalysis;
     private Integer weaknessBlast;
     private Integer weaknessStun;
-    private Integer altWeaknessFire;
-    private Integer altWeaknessWater;
-    private Integer altWeaknessIce;
-    private Integer altWeaknessThunder;
-    private Integer altWeaknessDragon;
-    private Integer altWeaknessPoison;
-    private Integer altWeaknessSleep;
-    private Integer altWeaknessParalysis;
-    private Integer altWeaknessBlast;
-    private Integer altWeaknessStun;
+    private Integer secondaryWeaknessFire;
+    private Integer secondaryWeaknessWater;
+    private Integer secondaryWeaknessIce;
+    private Integer secondaryWeaknessThunder;
+    private Integer secondaryWeaknessDragon;
+    private Integer secondaryWeaknessPoison;
+    private Integer secondaryWeaknessSleep;
+    private Integer secondaryWeaknessParalysis;
+    private Integer secondaryWeaknessBlast;
+    private Integer secondaryWeaknessStun;
+    private Integer tertiaryWeaknessFire;
+    private Integer tertiaryWeaknessWater;
+    private Integer tertiaryWeaknessIce;
+    private Integer tertiaryWeaknessThunder;
+    private Integer tertiaryWeaknessDragon;
+    private Integer tertiaryWeaknessPoison;
+    private Integer tertiaryWeaknessSleep;
+    private Integer tertiaryWeaknessParalysis;
+    private Integer tertiaryWeaknessBlast;
+    private Integer tertiaryWeaknessStun;
     private String ailmentRoar;
     private String ailmentWind;
     private String ailmentTremor;
@@ -82,7 +93,4 @@ public class MonsterEntity {
     private Boolean ailmentMud;
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private Boolean ailmentEffluvia;
-
-    @Transient
-    private MonsterTextEntity data;
 }

@@ -10,6 +10,7 @@ ENV MYSQL_ROOT_PASSWORD="admin" \
     MYSQL_PASSWORD="admin" \
     MYSQL_ROOT_HOST=% \
     LANG=C.utf8mb4_unicode_ci
+
 COPY sql/*.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 3306

@@ -16,6 +16,7 @@ public class MonsterHitzoneTextEntity {
 
     @Id
     private Integer id;
+    private Integer monsterHitzoneId;
     private String langId;
     private String name;
 

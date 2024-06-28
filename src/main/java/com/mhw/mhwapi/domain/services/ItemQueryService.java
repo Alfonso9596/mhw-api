@@ -8,7 +8,11 @@ import com.mhw.mhwapi.domain.entities.itemCombination.ItemCombinationEntity;
 import com.mhw.mhwapi.domain.entities.itemCombination.ItemCombinationRepository;
 import com.mhw.mhwapi.domain.entities.itemText.ItemTextEntity;
 import com.mhw.mhwapi.domain.entities.itemText.ItemTextRepository;
+import com.mhw.mhwapi.index.IndexService;
 import com.mhw.mhwapi.mappers.item.ItemConverter;
+import org.apache.solr.client.solrj.SolrClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +22,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ItemQueryService {
+public class ItemQueryService implements IndexService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ItemQueryService.class);
+
+    public static final String COLLECTION_NAME = "items";
 
     @Autowired
     private ItemRepository itemRepository;
@@ -63,5 +71,15 @@ public class ItemQueryService {
                 }
             }
         }
+    }
+
+    @Override
+    public String getCollectionName() {
+        return COLLECTION_NAME;
+    }
+
+    @Override
+    public void indexByType(SolrClient solrClient) {
+        LOGGER.info(COLLECTION_NAME);
     }
 }

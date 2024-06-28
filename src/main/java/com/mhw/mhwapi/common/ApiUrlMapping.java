@@ -4,6 +4,9 @@ public interface ApiUrlMapping {
 
     String API_PATH = "/api";
     String LANG_PATH = "/{lang}";
+    String PAGE_KEY = "page";
+    String PAGE_SIZE_KEY = "pageSize";
+    String SEARCH_KEY = "search";
 
     interface MonsterUrlMapping {
         String MONSTER_PATH = "/monsters";
@@ -22,5 +25,10 @@ public interface ApiUrlMapping {
     interface LanguageUrlMapping {
         String LANGUAGE_PATH = "/language";
         String GET_ALL_ACTIVE = API_PATH + LANGUAGE_PATH;
+    }
+
+    interface IndexUrlMapping {
+        String INDEX_PATH = "/index";
+        String INDEX_BY_TYPE = API_PATH + INDEX_PATH + "/{type}";
     }
 }

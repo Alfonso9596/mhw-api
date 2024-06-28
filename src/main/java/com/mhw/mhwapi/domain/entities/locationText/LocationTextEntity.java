@@ -16,6 +16,7 @@ public class LocationTextEntity {
 
     @Id
     private Integer id;
+    private Integer locationId;
     private Integer orderId;
     private String langId;
     private String name;

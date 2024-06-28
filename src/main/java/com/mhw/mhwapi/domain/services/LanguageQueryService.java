@@ -1,7 +1,6 @@
 package com.mhw.mhwapi.domain.services;
 
 import com.mhw.mhwapi.api.v1.language.dto.LanguageDto;
-import com.mhw.mhwapi.domain.entities.language.LanguageEntity;
 import com.mhw.mhwapi.domain.entities.language.LanguageRepository;
 import com.mhw.mhwapi.mappers.language.LanguageConverter;
 import org.springframework.beans.factory.annotation.Autowired;

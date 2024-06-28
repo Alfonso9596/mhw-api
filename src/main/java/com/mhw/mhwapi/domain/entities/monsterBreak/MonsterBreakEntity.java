@@ -1,6 +1,5 @@
 package com.mhw.mhwapi.domain.entities.monsterBreak;
 
-import com.mhw.mhwapi.domain.entities.monster.MonsterEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +14,7 @@ public class MonsterBreakEntity {
 
     @Id
     private Integer id;
-    @ManyToOne(targetEntity = MonsterEntity.class)
-    @JoinColumn(name = "monster_id")
-    private MonsterEntity monster;
+    private Integer monsterId;
     private Integer flinch;
     private Integer wound;
     private Integer sever;

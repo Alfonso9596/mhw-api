@@ -8,13 +8,13 @@ public class MonsterTypeConverter implements AttributeConverter<MonsterType, Str
 
     @Override
     public String convertToDatabaseColumn(@NonNull MonsterType type) {
-        return type.getValue();
+        return type.getEnglishValue();
     }
 
     @Override
     public MonsterType convertToEntityAttribute(String dbData) {
         for (MonsterType type : MonsterType.values()) {
-            if (type.getValue().equals(dbData)) {
+            if (type.getEnglishValue().equals(dbData)) {
                 return type;
             }
         }
