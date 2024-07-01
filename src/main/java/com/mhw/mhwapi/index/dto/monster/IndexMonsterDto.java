@@ -1,0 +1,86 @@
+package com.mhw.mhwapi.index.dto.monster;
+
+import com.mhw.mhwapi.index.dto.IndexEntryDto;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class IndexMonsterDto extends IndexEntryDto {
+
+    public Integer orderId;
+    public String nameDe;
+    public String nameEn;
+    public String ecologyDe;
+    public String ecologyEn;
+    public String descriptionDe;
+    public String descriptionEn;
+    public String primaryStateDescriptionDe;
+    public String primaryStateDescriptionEn;
+    public String secondaryStateDescriptionDe;
+    public String secondaryStateDescriptionEn;
+    public String tertiaryStateDescriptionDe;
+    public String tertiaryStateDescriptionEn;
+    public String monsterSize;
+    public String icon;
+    public String image;
+    public Boolean pitfallTrap;
+    public Boolean shockTrap;
+    public Boolean vineTrap;
+    public Boolean hasWeakness;
+    public Boolean hasSecondaryWeakness;
+    public Boolean hasTertiaryWeakness;
+    public Integer weaknessFire;
+    public Integer weaknessWater;
+    public Integer weaknessIce;
+    public Integer weaknessThunder;
+    public Integer weaknessDragon;
+    public Integer weaknessPoison;
+    public Integer weaknessSleep;
+    public Integer weaknessParalysis;
+    public Integer weaknessBlast;
+    public Integer weaknessStun;
+    public Integer secondaryWeaknessFire;
+    public Integer secondaryWeaknessWater;
+    public Integer secondaryWeaknessIce;
+    public Integer secondaryWeaknessThunder;
+    public Integer secondaryWeaknessDragon;
+    public Integer secondaryWeaknessPoison;
+    public Integer secondaryWeaknessSleep;
+    public Integer secondaryWeaknessParalysis;
+    public Integer secondaryWeaknessBlast;
+    public Integer secondaryWeaknessStun;
+    public Integer tertiaryWeaknessFire;
+    public Integer tertiaryWeaknessWater;
+    public Integer tertiaryWeaknessIce;
+    public Integer tertiaryWeaknessThunder;
+    public Integer tertiaryWeaknessDragon;
+    public Integer tertiaryWeaknessPoison;
+    public Integer tertiaryWeaknessSleep;
+    public Integer tertiaryWeaknessParalysis;
+    public Integer tertiaryWeaknessBlast;
+    public Integer tertiaryWeaknessStun;
+    public String ailmentRoar;
+    public String ailmentWind;
+    public String ailmentTremor;
+    public Boolean ailmentDefensedown;
+    public Boolean ailmentFireblight;
+    public Boolean ailmentWaterblight;
+    public Boolean ailmentIceblight;
+    public Boolean ailmentThunderblight;
+    public Boolean ailmentDragonblight;
+    public Boolean ailmentBlastblight;
+    public Boolean ailmentRegional;
+    public Boolean ailmentPoison;
+    public Boolean ailmentSleep;
+    public Boolean ailmentParalysis;
+    public Boolean ailmentBleed;
+    public Boolean ailmentStun;
+    public Boolean ailmentMud;
+    public Boolean ailmentEffluvia;
+    public List<Integer> breaks;
+    public List<Integer> habitats;
+    public List<Integer> hitzones;
+    public List<Integer> rewards;
+    public List<Integer> armorsets;
+}

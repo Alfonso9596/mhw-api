@@ -1,7 +1,7 @@
 package com.mhw.mhwapi.domain.entities.item;
 
-import com.mhw.mhwapi.domain.entities.itemCombination.ItemCombinationEntity;
-import com.mhw.mhwapi.domain.entities.itemText.ItemTextEntity;
+import com.mhw.mhwapi.domain.entities.itemcombination.ItemCombinationEntity;
+import com.mhw.mhwapi.domain.entities.itemtext.ItemTextEntity;
 import com.mhw.mhwapi.enums.ItemCategory;
 import com.mhw.mhwapi.enums.ItemSubCategory;
 import com.mhw.mhwapi.enums.converter.ItemCategoryConverter;

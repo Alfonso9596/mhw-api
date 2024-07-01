@@ -1,6 +1,6 @@
 package com.mhw.mhwapi.domain.entities.quest;
 
-import com.mhw.mhwapi.domain.entities.locationText.LocationTextEntity;
+import com.mhw.mhwapi.domain.entities.locationtext.LocationTextEntity;
 import com.mhw.mhwapi.enums.QuestCategory;
 import com.mhw.mhwapi.enums.QuestType;
 import com.mhw.mhwapi.enums.converter.QuestCategoryConverter;

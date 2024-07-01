@@ -2,7 +2,7 @@ package com.mhw.mhwapi.api.v1.index;
 
 import com.mhw.mhwapi.api.v1.BaseController;
 import com.mhw.mhwapi.common.ApiUrlMapping;
-import com.mhw.mhwapi.enums.IndexType;
+import com.mhw.mhwapi.enums.CollectionType;
 import com.mhw.mhwapi.index.IndexerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +23,9 @@ public class IndexController extends BaseController {
 
     @PostMapping(value = ApiUrlMapping.IndexUrlMapping.INDEX_BY_TYPE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity indexByType(
-            @PathVariable(value = "type") IndexType indexType) {
+            @PathVariable(name = "type") CollectionType collectionType) {
 
-        indexerService.indexByType(indexType);
+        indexerService.indexByType(collectionType);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

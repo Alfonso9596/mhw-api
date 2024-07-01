@@ -1,9 +1,10 @@
 package com.mhw.mhwapi.index;
 
-import com.mhw.mhwapi.domain.services.ItemQueryService;
-import com.mhw.mhwapi.domain.services.MonsterQueryService;
+import com.mhw.mhwapi.api.v1.solrconfiguration.dto.SolrCollectionDto;
 import com.mhw.mhwapi.domain.services.index.*;
-import com.mhw.mhwapi.enums.IndexType;
+import com.mhw.mhwapi.domain.services.solrconfiguration.SolrConfigurationService;
+import com.mhw.mhwapi.enums.CollectionType;
+import lombok.RequiredArgsConstructor;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.Http2SolrClient;
@@ -11,20 +12,22 @@ import org.apache.solr.client.solrj.request.CollectionAdminRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class IndexerService {
+
+    @Value("${solr.host.url}")
+    private String solrUrl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexerService.class);
 
-    private static final String SOLR_URL = "http://localhost:8983/solr";
-
-    @Autowired
-    private MonsterQueryService monsterQueryService;
+    private final List<IndexService> indexServices;
 
     @Autowired
     private MonsterIndexService monsterIndexService;
@@ -48,21 +51,28 @@ public class IndexerService {
     private LocationIndexService locationIndexService;
 
     @Autowired
-    private ItemQueryService itemQueryService;
+    private SolrConfigurationService solrConfigurationService;
 
 
-    public void indexByType(IndexType indexType) {
-        var queryService = this.getQueryService(indexType);
+    public void indexByType(CollectionType collectionType) {
+        var queryService = indexServices.stream()
+                .filter(service -> service.isSupported(collectionType))
+                .findFirst()
+                .orElse(null);
+
         if (queryService != null) {
-            String url = SOLR_URL + "/" + queryService.getCollectionName();
+            SolrCollectionDto solrCollectionDto = solrConfigurationService.findCollectionByType(collectionType);
+            String url = solrUrl + solrCollectionDto.getName();
             SolrClient solrClient = new Http2SolrClient.Builder(url).build();
-            createCollectionIfMissing(queryService.getCollectionName());
-            queryService.indexByType(solrClient);
+            createCollectionIfMissing(solrCollectionDto.getName());
+            queryService.indexByType(solrClient, solrCollectionDto);
+        } else {
+            LOGGER.error("No collection with collection type [{}] found", collectionType.name());
         }
     }
 
     private void createCollectionIfMissing(String collection) {
-        SolrClient solrClient = new Http2SolrClient.Builder(SOLR_URL).build();
+        SolrClient solrClient = new Http2SolrClient.Builder(solrUrl).build();
         try {
             List<String> existingCollections = CollectionAdminRequest.listCollections(solrClient);
 
@@ -70,41 +80,7 @@ public class IndexerService {
                 solrClient.request(CollectionAdminRequest.createCollection(collection, 1, 1));
             }
         } catch (SolrServerException | IOException e) {
-            LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
         }
-    }
-
-    private IndexService getQueryService(IndexType indexType) {
-        switch (indexType) {
-            case MONSTER -> {
-                return this.monsterIndexService;
-            }
-            case ITEM -> {
-                return this.itemQueryService;
-            }
-            case MONSTER_HABITAT -> {
-                return this.monsterHabitatIndexService;
-            }
-            case MONSTER_BREAK -> {
-                return this.monsterBreakIndexService;
-            }
-            case MONSTER_HITZONE -> {
-                return this.monsterHitzoneIndexService;
-            }
-            case MONSTER_REWARD -> {
-                return this.monsterRewardIndexService;
-            }
-            case MONSTER_REWARD_CONDITION -> {
-                return this.monsterRewardConditionIndexService;
-            }
-            case LOCATION -> {
-                return this.locationIndexService;
-            }
-            case ARMOR, WEAPON -> {
-                return null;
-            }
-        }
-        return null;
     }
 }

@@ -31,4 +31,15 @@ public interface ApiUrlMapping {
         String INDEX_PATH = "/index";
         String INDEX_BY_TYPE = API_PATH + INDEX_PATH + "/{type}";
     }
+
+    interface SearchUrlMapping {
+        String SEARCH_PATH = "/search";
+        String SEARCH_BY_TYPE = API_PATH + LANG_PATH + SEARCH_PATH + "/{type}";
+        String SEARCH_BY_ID = SEARCH_BY_TYPE + "/{id}";
+    }
+
+    interface SolrConfigurationUrlMapping {
+        String SOLR_CONFIGURATION_PATH = "/solr-configurations";
+        String GET_COLLECTIONS_BY_TYPE = API_PATH + SOLR_CONFIGURATION_PATH + "/collections/{type}";
+    }
 }

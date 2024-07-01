@@ -1,6 +1,5 @@
 package com.mhw.mhwapi.api.v1;
 
-import com.mhw.mhwapi.enums.MonsterSize;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,27 +14,13 @@ public class BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
 
     private static final String LANGUAGE_IS_NOT_SUPPORTED = "Language [%s] is not supported.";
-    private static final String MONSTER_SIZE_IS_NOT_SUPPORTED = "Monster size [%s] is not supported.";
 
     public void validateLangPath(String lang) {
         switch (lang) {
-            case "en":
-            case "de":
+            case "en", "de":
                 break;
             default:
                 String message = String.format(LANGUAGE_IS_NOT_SUPPORTED, lang);
-                LOGGER.error(message);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
-        }
-    }
-
-    public void validateMonsterSizePath(MonsterSize size) {
-        switch (size) {
-            case small:
-            case large:
-                break;
-            default:
-                String message = String.format(MONSTER_SIZE_IS_NOT_SUPPORTED, size);
                 LOGGER.error(message);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }

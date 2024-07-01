@@ -1,14 +1,16 @@
 package com.mhw.mhwapi.domain.services.index;
 
+import com.mhw.mhwapi.api.v1.solrconfiguration.dto.SolrCollectionDto;
+import com.mhw.mhwapi.api.v1.solrconfiguration.dto.SolrFieldDefinitionDto;
 import com.mhw.mhwapi.domain.entities.location.LocationEntity;
 import com.mhw.mhwapi.domain.entities.location.LocationRepository;
-import com.mhw.mhwapi.domain.entities.locationText.LocationTextEntity;
-import com.mhw.mhwapi.domain.entities.locationText.LocationTextRepository;
+import com.mhw.mhwapi.domain.entities.locationtext.LocationTextEntity;
+import com.mhw.mhwapi.domain.entities.locationtext.LocationTextRepository;
+import com.mhw.mhwapi.enums.CollectionType;
 import com.mhw.mhwapi.index.IndexService;
-import com.mhw.mhwapi.index.dto.location.SolrLocationDto;
+import com.mhw.mhwapi.index.dto.location.IndexLocationDto;
 import com.mhw.mhwapi.index.dto.location.mappers.SolrLocationConverter;
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +18,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class LocationIndexService implements IndexService {
+public class LocationIndexService extends BaseIndexService implements IndexService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocationIndexService.class);
-
-    public static final String COLLECTION_NAME = "locations";
 
     @Autowired
     private LocationRepository locationRepository;
@@ -39,54 +39,48 @@ public class LocationIndexService implements IndexService {
     private SolrLocationConverter solrLocationConverter;
 
     @Override
-    public String getCollectionName() {
-        return COLLECTION_NAME;
+    public boolean isSupported(CollectionType collectionType) {
+        return CollectionType.LOCATION.equals(collectionType);
     }
 
     @Override
-    public void indexByType(SolrClient solrClient) {
+    public void indexByType(SolrClient solrClient, SolrCollectionDto solrCollectionDto) {
         int page = 0;
         int totalPages = 1;
+        Map<Field, List<SolrFieldDefinitionDto>> configurationMap = createConfigurationMap(solrCollectionDto, IndexLocationDto.class);
         do {
-            Pageable pageable = PageRequest.of(page, batchSize);
+            Pageable pageable = PageRequest.of(page, BATCH_SIZE);
             Page<LocationEntity> locationEntities = locationRepository.findAll(pageable);
             totalPages = locationEntities.getTotalPages();
 
-            index(solrClient, page, totalPages, locationEntities);
-
+            LOGGER.info("Converting Locations page {} of {}", page, totalPages);
+            locationEntities.forEach(locationEntity -> {
+                IndexLocationDto indexLocationDto = convertToIndexDto(locationEntity);
+                LOGGER.info("Sending Location {}", indexLocationDto.getId());
+                try {
+                    index(solrClient, indexLocationDto, configurationMap);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             page++;
         } while (page <= totalPages-1);
     }
 
-    private void index(SolrClient solrClient, int page, int totalPages, Page<LocationEntity> locationEntities) {
-        if (CollectionUtils.isEmpty(locationEntities.getContent())) {
-            return;
-        }
-        LOGGER.info("Convert Locations page {} of {}", page, totalPages);
-        for (LocationEntity locationEntity : locationEntities.getContent()) {
+    private IndexLocationDto convertToIndexDto(LocationEntity locationEntity) {
+        IndexLocationDto indexLocationDto = solrLocationConverter.mapToSolr(locationEntity);
+        for (String lang : LANGUAGES) {
+            Optional<LocationTextEntity> optionalLocationTextEntity = locationTextRepository.getLocationTextByLocationIdAndLang(locationEntity.getId(), lang);
+            LocationTextEntity locationTextEntity = optionalLocationTextEntity.orElse(null);
+            assert locationTextEntity != null;
 
-            SolrLocationDto solrLocationDto = solrLocationConverter.mapToSolr(locationEntity);
-            for (String lang : LANGUAGES) {
-                Optional<LocationTextEntity> optionalLocationTextEntity = locationTextRepository.getLocationTextByLocationIdAndLang(locationEntity.getId(), lang);
-                LocationTextEntity locationTextEntity = optionalLocationTextEntity.orElse(null);
-                assert locationTextEntity != null;
-
-                if (locationTextEntity.getLangId().equals("de")) {
-                    solrLocationDto.setNameDe(locationTextEntity.getName());
-                }
-                if (locationTextEntity.getLangId().equals("en")) {
-                    solrLocationDto.setNameEn(locationTextEntity.getName());
-                }
+            if (locationTextEntity.getLangId().equals("de")) {
+                indexLocationDto.setNameDe(locationTextEntity.getName());
             }
-
-            try {
-                LOGGER.info("Sending Location {}", locationEntity.getId());
-                solrClient.addBean(solrLocationDto);
-                solrClient.commit();
-            } catch (IOException | SolrServerException e) {
-                LOGGER.error(e.getMessage());
-                throw new RuntimeException(e);
+            if (locationTextEntity.getLangId().equals("en")) {
+                indexLocationDto.setNameEn(locationTextEntity.getName());
             }
         }
+        return indexLocationDto;
     }
 }

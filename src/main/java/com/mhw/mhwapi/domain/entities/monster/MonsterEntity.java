@@ -15,7 +15,7 @@ public class MonsterEntity {
     @Id
     private Integer id;
     private Integer orderId;
-    private String size;
+    private String monsterSize;
     private String icon;
     private String image;
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)

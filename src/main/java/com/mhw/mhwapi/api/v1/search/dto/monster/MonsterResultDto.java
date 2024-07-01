@@ -1,0 +1,87 @@
+package com.mhw.mhwapi.api.v1.search.dto.monster;
+
+import com.mhw.mhwapi.api.v1.search.dto.DocumentResultDto;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class MonsterResultDto implements DocumentResultDto {
+
+    Integer id;
+    Integer orderId;
+    String nameDe;
+    String nameEn;
+    String ecologyDe;
+    String ecologyEn;
+    String descriptionDe;
+    String descriptionEn;
+    String primaryStateDescriptionDe;
+    String primaryStateDescriptionEn;
+    String secondaryStateDescriptionDe;
+    String secondaryStateDescriptionEn;
+    String tertiaryStateDescriptionDe;
+    String tertiaryStateDescriptionEn;
+    String monsterSize;
+    String icon;
+    String image;
+    Boolean pitfallTrap;
+    Boolean shockTrap;
+    Boolean vineTrap;
+    Boolean hasWeakness;
+    Boolean hasSecondaryWeakness;
+    Boolean hasTertiaryWeakness;
+    Integer weaknessFire;
+    Integer weaknessWater;
+    Integer weaknessIce;
+    Integer weaknessThunder;
+    Integer weaknessDragon;
+    Integer weaknessPoison;
+    Integer weaknessSleep;
+    Integer weaknessParalysis;
+    Integer weaknessBlast;
+    Integer weaknessStun;
+    Integer secondaryWeaknessFire;
+    Integer secondaryWeaknessWater;
+    Integer secondaryWeaknessIce;
+    Integer secondaryWeaknessThunder;
+    Integer secondaryWeaknessDragon;
+    Integer secondaryWeaknessPoison;
+    Integer secondaryWeaknessSleep;
+    Integer secondaryWeaknessParalysis;
+    Integer secondaryWeaknessBlast;
+    Integer secondaryWeaknessStun;
+    Integer tertiaryWeaknessFire;
+    Integer tertiaryWeaknessWater;
+    Integer tertiaryWeaknessIce;
+    Integer tertiaryWeaknessThunder;
+    Integer tertiaryWeaknessDragon;
+    Integer tertiaryWeaknessPoison;
+    Integer tertiaryWeaknessSleep;
+    Integer tertiaryWeaknessParalysis;
+    Integer tertiaryWeaknessBlast;
+    Integer tertiaryWeaknessStun;
+    String ailmentRoar;
+    String ailmentWind;
+    String ailmentTremor;
+    Boolean ailmentDefensedown;
+    Boolean ailmentFireblight;
+    Boolean ailmentWaterblight;
+    Boolean ailmentIceblight;
+    Boolean ailmentThunderblight;
+    Boolean ailmentDragonblight;
+    Boolean ailmentBlastblight;
+    Boolean ailmentRegional;
+    Boolean ailmentPoison;
+    Boolean ailmentSleep;
+    Boolean ailmentParalysis;
+    Boolean ailmentBleed;
+    Boolean ailmentStun;
+    Boolean ailmentMud;
+    Boolean ailmentEffluvia;
+    List<Long> breaks;
+    List<Long> habitats;
+    List<Long> hitzones;
+    List<Long> rewards;
+    List<Long> armorsets;
+}

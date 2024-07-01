@@ -24,6 +24,6 @@ public class LanguageQueryService {
                 .stream()
                 .map(languageConverter::map)
                 .sorted(Comparator.comparing(LanguageDto::getId))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
