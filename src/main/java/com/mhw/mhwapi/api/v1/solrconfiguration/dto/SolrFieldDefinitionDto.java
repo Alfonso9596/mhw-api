@@ -20,6 +20,7 @@ public class SolrFieldDefinitionDto implements Serializable {
     private WildcardType wildcardType;
     private Boolean freeTextSearch;
     private Double boost;
+    private Boolean langSearch;
     private Map<String, String> solrFieldNames = new HashMap<>();
     private String solrFieldName;
 }

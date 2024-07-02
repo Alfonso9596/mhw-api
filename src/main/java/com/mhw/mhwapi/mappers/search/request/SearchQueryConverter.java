@@ -26,12 +26,13 @@ public class SearchQueryConverter {
     private static final List<String> DEFAULT_FIELDS = Arrays.asList(SCORE, "*");
     private final List<FilterValueConverter> valueConverters;
 
-    public SolrQuery convert(SearchQueryData queryData) {
+    public SolrQuery convert(SearchQueryData queryData, String lang) {
         SolrQuery solrQuery = new SolrQuery();
         processFacets(solrQuery, queryData);
-        processQuery(solrQuery, queryData);
+        processQuery(solrQuery, queryData, lang);
         processFilterQueries(solrQuery, queryData);
         processSortQuery(solrQuery, queryData);
+        processLimitQuery(solrQuery, queryData);
         DEFAULT_FIELDS.forEach(solrQuery::addField);
         return solrQuery;
     }
@@ -52,7 +53,7 @@ public class SearchQueryConverter {
         solrQuery.addFacetField(Iterables.toArray(queryData.getFacetFields(), String.class));
     }
 
-    private void processQuery(SolrQuery solrQuery, SearchQueryData queryData) {
+    private void processQuery(SolrQuery solrQuery, SearchQueryData queryData, String lang) {
         if (StringUtils.isBlank(queryData.getQuery())) {
             solrQuery.setQuery("*:*");
             return;
@@ -64,9 +65,12 @@ public class SearchQueryConverter {
         LOGGER.info("FREETEXTQUERY: {}", freeTextQuery);
 
         freeTextFields.forEach(field -> {
-            String value = processSingleQuery(freeTextQuery, field, queryData.isQueryPhrase(), true);
-            if (value != null) {
-                solrQueries.add(field.getSolrFieldName() + ":" + value);
+            String langSuffix = String.valueOf(lang.charAt(0)).toUpperCase() + lang.substring(1);
+            if (Boolean.FALSE.equals(field.getLangSearch()) || (Boolean.TRUE.equals(field.getLangSearch()) && field.getResponseFieldName().endsWith(langSuffix))) {
+                String value = processSingleQuery(freeTextQuery, field, queryData.isQueryPhrase(), true);
+                if (value != null) {
+                    solrQueries.add(field.getSolrFieldName() + ":" + value);
+                }
             }
         });
 
@@ -101,6 +105,14 @@ public class SearchQueryConverter {
         solrQuery.addSort(SCORE, SolrQuery.ORDER.desc);
         for (SolrFieldDefinitionDto solrFieldDefinitionDto : queryData.getSortFields().keySet()) {
             solrQuery.addSort(solrFieldDefinitionDto.getSolrFieldName(), queryData.getSortFields().get(solrFieldDefinitionDto));
+        }
+    }
+
+    private void processLimitQuery(SolrQuery solrQuery, SearchQueryData queryData) {
+        if (queryData.getPageable() != null) {
+            solrQuery.setRows(queryData.getPageable().getPageSize());
+            int start = (queryData.getPageable().getPageNumber()) * queryData.getPageable().getPageSize();
+            solrQuery.setStart(Math.max(start, 0));
         }
     }
 

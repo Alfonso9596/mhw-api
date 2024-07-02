@@ -33,6 +33,8 @@ public class SolrFieldDefinitionEntity {
 
     private Double boost;
 
+    private Boolean langSearch;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "collection_id", referencedColumnName = "id")
     private SolrCollectionEntity collection;

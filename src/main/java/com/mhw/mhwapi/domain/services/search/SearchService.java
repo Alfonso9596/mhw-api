@@ -81,7 +81,6 @@ public class SearchService {
                 .collect(Collectors.toMap(SolrFieldDefinitionDto::getResponseFieldName, Function.identity()));
 
         QueryResponse solrResponse = search(filters, query, lang, collection.getName(), fieldDefinitions, pageable);
-        LOGGER.info("SOLR RESPONSE: {}", solrResponse.getResults());
         SearchResponseContext context = new SearchResponseContext(lang, collection.getSolrFieldDefinitions(), null);
 
         return responseListConverters.stream()
@@ -102,7 +101,7 @@ public class SearchService {
 
         SearchQueryData searchQuery = queryBuilder.build(fieldDefinitions);
         searchQuery.setSortFields(getSortFieldDefinition(pageable, fieldDefinitions));
-        SolrQuery solrQuery = searchQueryConverter.convert(searchQuery);
+        SolrQuery solrQuery = searchQueryConverter.convert(searchQuery, lang);
 
         LOGGER.info("COLLECTION: {}", collectionName);
         LOGGER.info("QUERY: {}", query);
